@@ -1,23 +1,22 @@
-import logo from './logo.svg';
+import React,{useState} from "react";
+import Board from "./components/Board"
 import './App.css';
 
 function App() {
+  let FlexableCell = { value: "", readonly: false }
+  const data = [
+    [{ ...FlexableCell }, { ...FlexableCell }, { ...FlexableCell }, { value: "4", readonly: true }],
+    [{ ...FlexableCell }, { value: "1", readonly: true }, { ...FlexableCell }, { ...FlexableCell }],
+    [{ ...FlexableCell }, { ...FlexableCell }, { value: "3", readonly: true }, { ...FlexableCell }],
+    [{ ...FlexableCell }, { value: "2", readonly: true }, { ...FlexableCell }, { ...FlexableCell }]
+  ]
+  const [rows, setCellValue] = useState([...data])
+  const handleCellValueChange = (payload) => {
+    setCellValue(payload)
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Board rows={rows} handleCellValueChange={handleCellValueChange} />
     </div>
   );
 }
