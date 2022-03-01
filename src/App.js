@@ -1,8 +1,10 @@
-import React,{useState} from "react";
-import Board from "./components/Board"
+import React,{useEffect, useRef, useState} from "react";
+import Board from "./components/Board/Board"
+import Timer from "./components/Timer/Timer"
 import './App.css';
 
 function App() {
+  const timerRef = useRef()
   let FlexableCell = { value: "", readonly: false }
   const data = [
     [{ ...FlexableCell }, { ...FlexableCell }, { ...FlexableCell }, { value: "4", readonly: true }],
@@ -14,8 +16,14 @@ function App() {
   const handleCellValueChange = (payload) => {
     setCellValue(payload)
   }
+  useEffect(()=>{
+  },[])
+  const handleTimer = () =>{
+    timerRef.current.resetTimer()
+  }
   return (
-    <div className="App">
+    <div className="sudoku-game">
+      <Timer duration={2} ref={timerRef} />
       <Board rows={rows} handleCellValueChange={handleCellValueChange} />
     </div>
   );
