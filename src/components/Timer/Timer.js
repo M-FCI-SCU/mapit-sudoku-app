@@ -24,7 +24,6 @@ function TimerHandler(props, ref) {
         clearInterval(intervalTimer);
         if (isActive) {
             intervalTimer = setInterval(function () {
-                // console.log(timer)
                 min = parseInt(timer / 60, 10);
                 sec = parseInt(timer % 60, 10);
 
@@ -37,6 +36,7 @@ function TimerHandler(props, ref) {
                 } else {
                     clearInterval(intervalTimer)
                     intervalTimer = null
+                    props.handleUserLost()
                 }
             }, 1000);
         } else {
