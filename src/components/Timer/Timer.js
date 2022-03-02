@@ -11,6 +11,10 @@ function TimerHandler(props, ref) {
         resetTimer: () => reset(),
         endTimer: () => pause()
     }))
+    function playSound() {
+        const audio = new Audio(require('../../assets/alert.mp3'));
+        audio.play();
+      }
     function reset() {
         setTimer(Duration);
         setIsActive(true);
@@ -31,6 +35,9 @@ function TimerHandler(props, ref) {
                 sec = sec < 10 ? "0" + sec : sec;
                 setMinutes(min)
                 setSeconds(sec)
+                if(timer == 10){
+                    playSound()
+                }
                 if (timer > 0) {
                     setTimer(--timer)
                 } else {

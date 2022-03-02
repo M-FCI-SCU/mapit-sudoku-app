@@ -8,15 +8,31 @@ import './App.css';
 function App() {
   const timerRef = useRef()
   const [show, setShow] = useState(false)
+  const [rows, setCellValue] = useState([])
   const [message, setMessage] = useState("Good luck next time")
-  let FlexableCell = { value: "", readonly: false }
-  const data = [
-    [{ ...FlexableCell }, { ...FlexableCell }, { ...FlexableCell }, { value: "4", readonly: true }],
-    [{ ...FlexableCell }, { value: "1", readonly: true }, { ...FlexableCell }, { ...FlexableCell }],
-    [{ ...FlexableCell }, { ...FlexableCell }, { value: "3", readonly: true }, { ...FlexableCell }],
-    [{ value: "2", readonly: true }, { ...FlexableCell }, { ...FlexableCell }, { ...FlexableCell }]
-  ]
-  const [rows, setCellValue] = useState([...data])
+  useEffect(() => {
+    let result = generateSudokuGame()
+    setCellValue([...result])
+  }, [])
+  const generateSudokuGame = () => {
+    let arr = [1, 2, 3, 4].map(() => [1, 2, 3, 4].map(() => ({ value: "", readonly: false })));
+    let row,col;
+    let clues = [];
+    [1, 2, 3, 4].forEach(element => {
+      let is_exist = true;
+      while (is_exist) {
+         row = Math.floor(Math.random() * 4);
+         col = Math.floor(Math.random() * 4);
+        if (!clues.find(clue=> clue[0] == row || clue[1] == col)) {
+          arr[row][col] = { value: element + '', readonly: true }
+          clues.push([row,col])
+          is_exist = false
+        }
+      }
+    })
+    return arr
+  }
+
   const handleCellValueChange = (payload) => {
     setCellValue(payload)
     for (var i = 0; i < 4; i++) {
@@ -33,20 +49,23 @@ function App() {
         return;
       }
     }
+    handleUserWon()
   }
   const checkForDublicateAndEmptyValue = (arry) => {
     let emptyExist = false
     let dublicatedElementsExist = arry.filter((item, index) => {
+      if (item.value == "") {
+        emptyExist = true
+      }
       if (item.value != "" && arry.findIndex(elem => elem.value == item.value) !== index) {
         return true
-      } else if (item.value == "") {
-        emptyExist = true
       }
     })
     if (dublicatedElementsExist.length > 0 || emptyExist) {
       return true;
+    } else {
+      return false
     }
-    handleUserWon()
   }
   const handleUserWon = () => {
     timerRef.current.endTimer()
@@ -60,7 +79,8 @@ function App() {
   const handlePlayAgain = () => {
     closePopup()
     timerRef.current.resetTimer()
-    setCellValue([...data])
+    let result = generateSudokuGame()
+    setCellValue([...result])
   }
   const closePopup = () => {
     setShow(false)

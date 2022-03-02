@@ -1,8 +1,14 @@
 .sudoku-game {
   padding-top: 50px;
   display: flex;
-  justify-content: center;
+  
   align-items: center;
   flex-direction: column;
+  height: 100vh;
+  
+  background-image: url("./assets/sudoku.jpg");
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size: cover;
 }
 
